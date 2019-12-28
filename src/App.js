@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import './App.css';
 import axios from 'axios';
+import Footer from './Footer';
+import TopBar from './TopBar';
+import BreadCrumb from './BreadCrumb';
+import Router from './Router';
+import TopBarSample from './TopBarSample';
+import WorkSpace from './WorkSpace';
 
 
+
+
+  
 class App extends Component{
 
   state={
@@ -13,12 +22,9 @@ class App extends Component{
 
 
   async componentDidMount(){
-
-
     const response = await axios.get("http://jsonplaceholder.typicode.com/users",
         { headers: {'Content-Type': 'application/json'}}
       );
-      console.log(response);
     const body = await response.data;
     this.setState({
       projects: body,
@@ -38,16 +44,19 @@ class App extends Component{
 
 
       <div className="App">
-      <div className="header" >
-          <h3 className="text-muted" align="left">CGovern</h3>
-      </div>
 
+      <TopBar/>
+      <BreadCrumb/>
+      {/* <Router/> */}
+
+      {/* <WorkSpace/> */}
+{/*       
         <header className="App-header">
 
           <div className="App-intro">
           <h2>Projects</h2>
 
-          
+
           {projects.map(project=>
               <div key={project.id}>
               {project.name}
@@ -55,10 +64,12 @@ class App extends Component{
           )}
           </div>
         </header>
-        <footer class="footer">
-            <p>&copy; 2020 Vamsi Ravi</p>
-        </footer>
+
+ */}
+        <Footer/>
       </div>
+
+      // <Footer/>
 
 
 
