@@ -4,11 +4,6 @@ import axios from 'axios';
 import Footer from './Footer';
 import TopBar from './TopBar';
 import BreadCrumb from './BreadCrumb';
-import Router from './Router';
-import TopBarSample from './TopBarSample';
-import WorkSpace from './WorkSpace';
-
-
 
 
   
@@ -22,19 +17,29 @@ class App extends Component{
 
 
   async componentDidMount(){
+
+
+    const resp = await axios.get("http://localhost:8080/v2/health",{ headers: {'Content-Type': 'application/json','Origin':'*'}});
     const response = await axios.get("http://jsonplaceholder.typicode.com/users",
         { headers: {'Content-Type': 'application/json'}}
       );
+
+    const vitalbody = await resp.data;
     const body = await response.data;
+
+    console.log(vitalbody.appname)
+
     this.setState({
       projects: body,
+      health: vitalbody.appname,
       isLoading: false
     });
   }
 
 
+
     render(){
-      const {projects, isLoading} = this.state;
+      const {projects, isLoading,health} = this.state;
 
       if(isLoading){
         return <p>Loading .... </p>;
@@ -46,16 +51,18 @@ class App extends Component{
       <div className="App">
 
       <TopBar/>
+
+      
       <BreadCrumb/>
       {/* <Router/> */}
 
       {/* <WorkSpace/> */}
-{/*       
+      
         <header className="App-header">
 
           <div className="App-intro">
           <h2>Projects</h2>
-
+          <h2> {health} </h2>
 
           {projects.map(project=>
               <div key={project.id}>
@@ -65,8 +72,8 @@ class App extends Component{
           </div>
         </header>
 
- */}
-        <Footer/>
+
+        <Footer />
       </div>
 
       // <Footer/>

@@ -7,8 +7,10 @@ class Footer extends Component{
   render(){
     return(
 
-      <footer class="footer">
-          <p>&copy; 2020 Vamsi Ravi</p>
+      <footer class="page-footer font-small blue pt-4">
+          <div class="footer-copyright text-center py-3">Copyright © 2020 CGovern. All rights reserved.
+    
+  </div>
       </footer>
     );
   }
