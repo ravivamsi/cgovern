@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <div class="hero">
+    <h1>Govern CI, CD, testing and monitoring from one control plane</h1>
+    <p class="muted">CGovern does not run builds on this JVM. It catalogs organizations, services, sequential jobs and tasks, then dispatches signed work to remote agents.</p>
+    <p>
+      <a class="btn" th:href="@{/register}">Create an account</a>
+      <a class="btn secondary" th:href="@{/login}">Sign in</a>
+    </p>
+  </div>
+
+  <h2>Product modules</h2>
+  <div class="grid">
+    <article class="card" th:each="m : ${modules}">
+      <h3 th:text="${m.title}">CI</h3>
+      <p class="muted" th:text="${m.summary}">summary</p>
+      <a th:href="@{|/features/${m.slug}/orgs|}">Open catalog</a>
+    </article>
+  </div>
+
+  <h2>How remote execution works</h2>
+  <div class="card">
+    <p>Each <strong>service</strong> owns an ordered list of <strong>jobs</strong>. Jobs always run one after another. Inside a job, <strong>tasks</strong> share a parallel group: the same group with mode PARALLEL runs together; other groups wait.</p>
+    <p>The control plane never SSHs into customer machines. It POSTs an HMAC-SHA256 signed payload to the agent URL. The agent verifies timestamp + signature, checks the task capability against an allowlist (BUILD, TEST, DEPLOY, MONITOR), then executes in its own isolation (container, VM, or runner pool).</p>
+    <p>Demo agents are marked <span class="pill">simulated</span> so this app can run without extra processes. Uncheck simulated and set a real HTTPS agent URL to dispatch live.</p>
+  </div>
+
+  <h2>How many servers?</h2>
+  <div class="grid">
+    <article class="card">
+      <h3>Local demo</h3>
+      <p><strong>1 process</strong>: this Spring Boot app + H2. Remote workers are simulated in-process.</p>
+    </article>
+    <article class="card">
+      <h3>Small production</h3>
+      <p><strong>3 roles</strong>: control plane, managed PostgreSQL, and at least one agent per environment you deploy into (dev / staging / prod).</p>
+    </article>
+    <article class="card">
+      <h3>Hardened production</h3>
+      <p><strong>6+ nodes</strong>: 2 control-plane instances, primary + replica DB, optional queue, Prometheus, and N agents (scale agents for throughput, not the UI).</p>
+    </article>
+  </div>
+
+  <h2>Security technology to use</h2>
+  <ul>
+    <li>mTLS or HMAC with rotating shared secrets (implemented) plus short timestamps</li>
+    <li>Capability allowlists per agent — no open shell from the UI</li>
+    <li>Private networks / VPC peering; agents pull or accept only from the control plane CIDR</li>
+    <li>Workload isolation: containers or ephemeral VMs, not the agent OS</li>
+    <li>Audit logs of every dispatch (job runs + notifications in this app)</li>
+  </ul>
+</section>
+</body>
+</html>

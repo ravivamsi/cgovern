@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Support / contact</h1>
+  <p th:if="${message}" class="flash" th:text="${message}"></p>
+  <form class="panel" th:action="@{/support}" th:object="${ticket}" method="post">
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Email</label>
+    <input type="email" th:field="*{email}" required/>
+    <label>Subject</label>
+    <input th:field="*{subject}" required/>
+    <label>Message</label>
+    <textarea rows="5" th:field="*{message}" required></textarea>
+    <p><button type="submit">Send</button></p>
+  </form>
+</section>
+</body>
+</html>

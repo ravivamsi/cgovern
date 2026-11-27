@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <p class="crumb"><a th:href="@{/}">Home</a> / <span th:text="${feature.title}">CI</span></p>
+  <h1 th:text="${feature.title}">CI</h1>
+  <p class="muted" th:text="${feature.summary}"></p>
+  <p><a class="btn" th:href="@{|/features/${feature.slug}/orgs/new|}">Add organization</a></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Organization</th><th>Description</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="org : ${orgs}">
+          <td><a th:href="@{|/features/${feature.slug}/orgs/${org.id}/services|}" th:text="${org.name}">name</a></td>
+          <td th:text="${org.description}"></td>
+          <td class="row-actions">
+            <a class="btn secondary" th:href="@{|/features/${feature.slug}/orgs/${org.id}/edit|}">Update</a>
+            <form th:action="@{|/features/${feature.slug}/orgs/${org.id}/delete|}" method="post" class="inline">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(orgs)}" class="muted">No organizations yet.</p>
+  </div>
+</section>
+</body>
+</html>

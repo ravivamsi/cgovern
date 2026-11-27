@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1 th:text="${organization.id == null} ? 'Add organization' : 'Update organization'">Org</h1>
+  <form class="panel" th:action="@{|/features/${feature.slug}/orgs|}" th:object="${organization}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Description</label>
+    <textarea th:field="*{description}" rows="3"></textarea>
+    <p><button type="submit">Save</button></p>
+  </form>
+</section>
+</body>
+</html>

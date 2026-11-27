@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Remote servers / agents</h1>
+  <p class="muted">Workers that receive HMAC-signed tasks. Keep one agent close to each runtime environment rather than opening inbound SSH to the control plane.</p>
+  <p><a class="btn" th:href="@{/servers/new}">Add server</a></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Region</th><th>URL</th><th>Capabilities</th><th>Mode</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="s : ${servers}">
+          <td th:text="${s.name}"></td>
+          <td th:text="${s.region}"></td>
+          <td><code th:text="${s.baseUrl}"></code></td>
+          <td th:text="${s.allowedCapabilities}"></td>
+          <td th:text="${s.simulated} ? 'simulated' : 'live'"></td>
+          <td class="row-actions">
+            <a class="btn secondary" th:href="@{|/servers/${s.id}/edit|}">Update</a>
+            <form th:action="@{|/servers/${s.id}/delete|}" method="post" class="inline">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

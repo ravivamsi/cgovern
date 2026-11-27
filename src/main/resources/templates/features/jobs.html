@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <p class="crumb">
+    <a th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services|}">Services</a> /
+    <span th:text="${appService.name}">svc</span>
+  </p>
+  <h1>Jobs (always sequential)</h1>
+  <p class="muted">Lower order index runs first. A failed job stops the rest of the pipeline.</p>
+  <p class="row-actions">
+    <a class="btn" th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/new|}">Add job</a>
+    <form th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/run|}" method="post" class="inline">
+      <button type="submit">Run pipeline</button>
+    </form>
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Job</th><th>Agent</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="job : ${jobs}">
+          <td th:text="${job.orderIndex}">1</td>
+          <td><a th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/tasks|}" th:text="${job.name}">job</a></td>
+          <td th:text="${job.remoteServer != null} ? ${job.remoteServer.name} : 'unassigned'"></td>
+          <td class="row-actions">
+            <a class="btn secondary" th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/edit|}">Update</a>
+            <form th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/run|}" method="post" class="inline">
+              <button type="submit">Run job</button>
+            </form>
+            <form th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/delete|}" method="post" class="inline">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

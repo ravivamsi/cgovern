@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Sign in</h1>
+  <p class="muted">Demo account: admin@cgovern.dev / admin123</p>
+  <p th:if="${param.error}" class="flash">Invalid email or password.</p>
+  <p th:if="${param.registered}" class="flash">Account created. Sign in to continue.</p>
+  <form class="panel" th:action="@{/login}" method="post">
+    <label>Email</label>
+    <input type="email" name="email" required/>
+    <label>Password</label>
+    <input type="password" name="password" required/>
+    <p><button type="submit">Login</button></p>
+  </form>
+</section>
+</body>
+</html>

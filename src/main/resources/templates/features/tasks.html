@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <p class="crumb">
+    <a th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs|}">Jobs</a> /
+    <span th:text="${job.name}">job</span>
+  </p>
+  <h1>Tasks</h1>
+  <p class="muted">Same parallel group + PARALLEL mode runs together. Different groups stay sequential.</p>
+  <p class="row-actions">
+    <a class="btn" th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/tasks/new|}">Add task</a>
+    <form th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/run|}" method="post" class="inline">
+      <button type="submit">Run this job</button>
+    </form>
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Group</th><th>Order</th><th>Name</th><th>Mode</th><th>Capability</th><th>Command</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="task : ${tasks}">
+          <td th:text="${task.parallelGroup}">1</td>
+          <td th:text="${task.orderIndex}">1</td>
+          <td th:text="${task.name}">name</td>
+          <td><span class="pill" th:text="${task.executionMode}">SEQUENTIAL</span></td>
+          <td th:text="${task.capability}">BUILD</td>
+          <td><code th:text="${task.command}"></code></td>
+          <td class="row-actions">
+            <a class="btn secondary" th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/tasks/${task.id}/edit|}">Update</a>
+            <form th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/tasks/${task.id}/delete|}" method="post" class="inline">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

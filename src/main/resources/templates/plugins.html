@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Plugins</h1>
+  <p><a class="btn" th:href="@{/plugins/new}">Add plugin</a></p>
+  <div class="grid">
+    <article class="card" th:each="p : ${plugins}">
+      <h3 th:text="${p.name}">plugin</h3>
+      <p class="muted" th:text="${p.description}"></p>
+      <p><span class="pill" th:text="${p.version}"></span>
+        <span class="pill" th:text="${p.enabled} ? 'enabled' : 'disabled'"></span></p>
+      <form th:action="@{|/plugins/${p.id}/delete|}" method="post">
+        <button class="danger" type="submit">Delete</button>
+      </form>
+    </article>
+  </div>
+</section>
+</body>
+</html>

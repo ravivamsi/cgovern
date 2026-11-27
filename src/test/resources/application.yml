@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:cgovern-test;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+cgovern:
+  demo-user:
+    email: admin@cgovern.dev
+    password: admin123
+    name: Admin

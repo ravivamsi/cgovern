@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1 th:text="${job.id == null} ? 'Add job' : 'Update job'">Job</h1>
+  <form class="panel" th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs|}" th:object="${job}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Description</label>
+    <textarea th:field="*{description}" rows="3"></textarea>
+    <label>Order index (sequential)</label>
+    <input type="number" th:field="*{orderIndex}" min="1"/>
+    <label>Remote server</label>
+    <select name="remoteServerId">
+      <option value="">Unassigned</option>
+      <option th:each="s : ${servers}" th:value="${s.id}" th:text="${s.name + ' (' + s.region + ')'}"
+              th:selected="${job.remoteServer != null and job.remoteServer.id == s.id}"></option>
+    </select>
+    <p><button type="submit">Save</button></p>
+  </form>
+</section>
+</body>
+</html>

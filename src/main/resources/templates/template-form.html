@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Template</h1>
+  <form class="panel" th:action="@{/templates}" th:object="${jobTemplate}" method="post">
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Module</label>
+    <select th:field="*{module}">
+      <option th:each="m : ${modules}" th:value="${m}" th:text="${m.title}"></option>
+    </select>
+    <label>Description</label>
+    <textarea th:field="*{description}" rows="3"></textarea>
+    <label>Sample tasks</label>
+    <textarea th:field="*{sampleTasks}" rows="3"></textarea>
+    <p><button type="submit">Save</button></p>
+  </form>
+</section>
+</body>
+</html>

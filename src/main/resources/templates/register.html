@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Create your CGovern account</h1>
+  <p th:if="${error}" class="flash" th:text="${error}"></p>
+  <form class="panel" th:action="@{/register}" method="post">
+    <label>Full name</label>
+    <input name="fullName" required th:value="${fullName}"/>
+    <label>Email</label>
+    <input type="email" name="email" required th:value="${email}"/>
+    <label>Password</label>
+    <input type="password" name="password" required minlength="6"/>
+    <p><button type="submit">Register</button></p>
+  </form>
+</section>
+</body>
+</html>

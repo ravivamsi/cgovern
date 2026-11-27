@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <p class="crumb">
+    <a th:href="@{|/features/${feature.slug}/orgs|}">Orgs</a> / <span th:text="${organization.name}">org</span>
+  </p>
+  <h1>Services</h1>
+  <p><a class="btn" th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/new|}">Add service</a></p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Service</th><th>Repository</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="svc : ${services}">
+          <td><a th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${svc.id}/jobs|}" th:text="${svc.name}">svc</a></td>
+          <td th:text="${svc.repositoryUrl}"></td>
+          <td class="row-actions">
+            <a class="btn secondary" th:href="@{|/features/${feature.slug}/orgs/${organization.id}/services/${svc.id}/edit|}">Update</a>
+            <form th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${svc.id}/delete|}" method="post" class="inline">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

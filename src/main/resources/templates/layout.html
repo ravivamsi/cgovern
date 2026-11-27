@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="layout (content)">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${pageTitle} ?: 'CGovern'">CGovern</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" th:href="@{/}">CGOVERN</a>
+  <a th:href="@{/}">Home</a>
+  <a th:href="@{/pricing}">Pricing</a>
+  <a th:href="@{/api-docs}">API</a>
+  <a th:href="@{/support}">Support</a>
+  <a th:href="@{/features/ci/orgs}" sec:authorize="isAuthenticated()">CI</a>
+  <a th:href="@{/features/cd/orgs}" sec:authorize="isAuthenticated()">CD</a>
+  <a th:href="@{/features/ct/orgs}" sec:authorize="isAuthenticated()">CT</a>
+  <a th:href="@{/features/cm/orgs}" sec:authorize="isAuthenticated()">CM</a>
+  <a th:href="@{/features/agentic/orgs}" sec:authorize="isAuthenticated()">Agentic</a>
+  <a th:href="@{/servers}" sec:authorize="isAuthenticated()">Servers</a>
+  <a th:href="@{/templates}" sec:authorize="isAuthenticated()">Templates</a>
+  <a th:href="@{/plugins}" sec:authorize="isAuthenticated()">Plugins</a>
+  <a th:href="@{/notifications}" sec:authorize="isAuthenticated()">Notifications</a>
+  <span style="margin-left:auto"></span>
+  <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+  <a th:href="@{/register}" sec:authorize="!isAuthenticated()">Register</a>
+  <form th:action="@{/logout}" method="post" class="inline" sec:authorize="isAuthenticated()">
+    <button class="btn secondary" type="submit">Logout</button>
+  </form>
+</nav>
+<main class="wrap" th:insert="${content}"></main>
+<footer class="footer">
+  <span>CGovern control plane · jobs sequential · tasks sequential or parallel · HMAC agents</span>
+</footer>
+</body>
+</html>
