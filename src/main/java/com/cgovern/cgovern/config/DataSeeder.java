@@ -12,6 +12,8 @@ import com.cgovern.cgovern.domain.FeatureModule;
 import com.cgovern.cgovern.domain.Job;
 import com.cgovern.cgovern.domain.JobTemplate;
 import com.cgovern.cgovern.domain.NotificationItem;
+import com.cgovern.cgovern.domain.OrgMembership;
+import com.cgovern.cgovern.domain.OrgRole;
 import com.cgovern.cgovern.domain.Organization;
 import com.cgovern.cgovern.domain.Plugin;
 import com.cgovern.cgovern.domain.RemoteServer;
@@ -21,6 +23,7 @@ import com.cgovern.cgovern.repo.AppServiceRepository;
 import com.cgovern.cgovern.repo.JobRepository;
 import com.cgovern.cgovern.repo.JobTemplateRepository;
 import com.cgovern.cgovern.repo.NotificationRepository;
+import com.cgovern.cgovern.repo.OrgMembershipRepository;
 import com.cgovern.cgovern.repo.OrganizationRepository;
 import com.cgovern.cgovern.repo.PluginRepository;
 import com.cgovern.cgovern.repo.RemoteServerRepository;
@@ -34,7 +37,7 @@ public class DataSeeder {
     CommandLineRunner seedData(UserAccountRepository users, PasswordEncoder encoder, Environment env,
             OrganizationRepository orgs, AppServiceRepository services, JobRepository jobs, TaskRepository tasks,
             RemoteServerRepository servers, PluginRepository plugins, JobTemplateRepository templates,
-            NotificationRepository notifications) {
+            NotificationRepository notifications, OrgMembershipRepository memberships) {
         return args -> {
             if (users.count() == 0) {
                 UserAccount admin = new UserAccount();
@@ -43,6 +46,14 @@ public class DataSeeder {
                 admin.setPasswordHash(encoder.encode(env.getProperty("cgovern.demo-user.password", "admin123")));
                 admin.setRole("ROLE_ADMIN");
                 users.save(admin);
+            }
+            if (users.findByEmail("member@cgovern.dev").isEmpty()) {
+                UserAccount member = new UserAccount();
+                member.setFullName("Org Member");
+                member.setEmail("member@cgovern.dev");
+                member.setPasswordHash(encoder.encode("member123"));
+                member.setRole("ROLE_USER");
+                users.save(member);
             }
             if (servers.count() == 0) {
                 servers.save(server("ci-worker-east", "us-east-1", "http://agent-east:8443", "BUILD,TEST"));
@@ -87,7 +98,24 @@ public class DataSeeder {
                 item.setBody("Demo agents are simulated. Register a remote URL to dispatch HMAC-signed jobs.");
                 notifications.save(item);
             }
+            if (memberships.count() == 0) {
+                UserAccount admin = users.findByEmail(env.getProperty("cgovern.demo-user.email", "admin@cgovern.dev")).orElseThrow();
+                UserAccount member = users.findByEmail("member@cgovern.dev").orElseThrow();
+                for (Organization organization : orgs.findAll()) {
+                    memberships.save(membership(admin, organization, OrgRole.ADMIN));
+                }
+                orgs.findAll().stream().filter(o -> o.getModule() == FeatureModule.CI).findFirst()
+                        .ifPresent(ci -> memberships.save(membership(member, ci, OrgRole.MEMBER)));
+            }
         };
+    }
+
+    private OrgMembership membership(UserAccount user, Organization organization, OrgRole role) {
+        OrgMembership membership = new OrgMembership();
+        membership.setUser(user);
+        membership.setOrganization(organization);
+        membership.setRole(role);
+        return membership;
     }
 
     private RemoteServer server(String name, String region, String url, String caps) {

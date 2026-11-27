@@ -2,10 +2,13 @@ package com.cgovern.cgovern.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import java.util.UUID;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cgovern.cgovern.domain.FeatureModule;
 import com.cgovern.cgovern.domain.JobTemplate;
@@ -39,32 +42,40 @@ public class OpsController {
     public String servers(Model model) {
         model.addAttribute("pageTitle", "Remote servers");
         model.addAttribute("servers", catalog.servers());
+        model.addAttribute("server", new RemoteServer());
         return "servers";
     }
 
     @GetMapping("/servers/new")
-    public String newServer(Model model) {
-        model.addAttribute("pageTitle", "Register server");
-        model.addAttribute("server", new RemoteServer());
-        return "server-form";
+    public String newServer() {
+        return "redirect:/servers";
     }
 
     @GetMapping("/servers/{id}/edit")
     public String editServer(@PathVariable Long id, Model model) {
         model.addAttribute("pageTitle", "Update server");
         model.addAttribute("server", catalog.server(id));
-        return "server-form";
+        model.addAttribute("servers", catalog.servers());
+        return "servers";
     }
 
     @PostMapping("/servers")
-    public String saveServer(@ModelAttribute RemoteServer server) {
+    public String saveServer(@ModelAttribute RemoteServer server, RedirectAttributes redirect) {
+        if (server.getSharedSecret() == null || server.getSharedSecret().isBlank()) {
+            server.setSharedSecret(UUID.randomUUID().toString());
+        }
+        if (server.getAllowedCapabilities() == null || server.getAllowedCapabilities().isBlank()) {
+            server.setAllowedCapabilities("BUILD,TEST");
+        }
         catalog.saveServer(server);
+        redirect.addFlashAttribute("message", "Server saved. Jobs can target it immediately.");
         return "redirect:/servers";
     }
 
     @PostMapping("/servers/{id}/delete")
-    public String deleteServer(@PathVariable Long id) {
+    public String deleteServer(@PathVariable Long id, RedirectAttributes redirect) {
         catalog.deleteServer(id);
+        redirect.addFlashAttribute("message", "Server removed. Jobs that used it are unassigned.");
         return "redirect:/servers";
     }
 

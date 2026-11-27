@@ -8,4 +8,6 @@ import com.cgovern.cgovern.domain.Job;
 
 public interface JobRepository extends JpaRepository<Job, Long> {
     List<Job> findByServiceIdOrderByOrderIndexAsc(Long serviceId);
+
+    List<Job> findByRemoteServerId(Long remoteServerId);
 }

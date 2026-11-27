@@ -24,6 +24,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/pricing", "/api-docs", "/support", "/register",
                                 "/css/**", "/js/**", "/images/**", "/actuator/health", "/api/v2/health", "/h2/**")
                         .permitAll()
+                        .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
