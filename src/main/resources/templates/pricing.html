@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Pricing</h1>
+  <div class="grid">
+    <article class="card">
+      <h3>Starter</h3>
+      <p class="muted">$0 · local control plane</p>
+      <ul>
+        <li>1 simulated agent</li>
+        <li>CI catalog</li>
+        <li>Community support</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Team</h3>
+      <p class="muted">$99 / month</p>
+      <ul>
+        <li>CI, CD, CT, CM</li>
+        <li>Up to 10 remote agents</li>
+        <li>HMAC + capability allowlists</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Platform</h3>
+      <p class="muted">$499 / month</p>
+      <ul>
+        <li>Agentic monitoring</li>
+        <li>Unlimited agents</li>
+        <li>SSO, audit export, dedicated support</li>
+      </ul>
+    </article>
+  </div>
+</section>
+</body>
+</html>

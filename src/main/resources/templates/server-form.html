@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Server</h1>
+  <form class="panel" th:action="@{/servers}" th:object="${server}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Region</label>
+    <input th:field="*{region}" required/>
+    <label>Base URL</label>
+    <input th:field="*{baseUrl}" required/>
+    <label>Shared secret</label>
+    <input th:field="*{sharedSecret}" required/>
+    <label>Allowed capabilities (comma separated)</label>
+    <input th:field="*{allowedCapabilities}"/>
+    <label>Simulated</label>
+    <select th:field="*{simulated}">
+      <option th:value="true">true</option>
+      <option th:value="false">false</option>
+    </select>
+    <p><button type="submit">Save</button></p>
+  </form>
+</section>
+</body>
+</html>

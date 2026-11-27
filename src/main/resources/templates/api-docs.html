@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>API documentation</h1>
+  <p class="muted">JSON API under <code>/api/v2</code>. HTML catalog under <code>/features/{module}/orgs</code>.</p>
+  <div class="card">
+    <h3>Health</h3>
+    <pre>GET /api/v2/health
+GET /actuator/health</pre>
+    <h3>Catalog</h3>
+    <pre th:each="m : ${modules}">GET /api/v2/features/<span th:text="${m.slug}">ci</span>/orgs</pre>
+    <h3>Agent dispatch (control plane → remote server)</h3>
+    <pre>POST {agentBaseUrl}/agent/execute
+Headers:
+  X-CGovern-Timestamp: epoch millis
+  X-CGovern-Signature: hex(HMAC_SHA256(secret, timestamp + "." + body))
+  X-CGovern-Agent: server id
+Body: {"taskId":1,"command":"..."}</pre>
+  </div>
+</section>
+</body>
+</html>

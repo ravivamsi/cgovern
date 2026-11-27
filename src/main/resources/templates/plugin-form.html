@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Plugin</h1>
+  <form class="panel" th:action="@{/plugins}" th:object="${plugin}" method="post">
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Description</label>
+    <textarea th:field="*{description}" rows="3"></textarea>
+    <label>Version</label>
+    <input th:field="*{version}"/>
+    <p><button type="submit">Save</button></p>
+  </form>
+</section>
+</body>
+</html>

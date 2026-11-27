@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1 th:text="${task.id == null} ? 'Add task' : 'Update task'">Task</h1>
+  <form class="panel" th:action="@{|/features/${feature.slug}/orgs/${organization.id}/services/${appService.id}/jobs/${job.id}/tasks|}" th:object="${task}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <label>Name</label>
+    <input th:field="*{name}" required/>
+    <label>Command (allowlisted capability only — not a free shell on the control plane)</label>
+    <textarea th:field="*{command}" rows="3"></textarea>
+    <label>Execution mode</label>
+    <select th:field="*{executionMode}">
+      <option th:each="mode : ${modes}" th:value="${mode}" th:text="${mode}"></option>
+    </select>
+    <label>Parallel group</label>
+    <input type="number" th:field="*{parallelGroup}" min="1"/>
+    <label>Order inside group</label>
+    <input type="number" th:field="*{orderIndex}" min="1"/>
+    <label>Capability</label>
+    <input th:field="*{capability}"/>
+    <p><button type="submit">Save</button></p>
+  </form>
+</section>
+</body>
+</html>

@@ -1,0 +1,72 @@
+:root {
+  --bg: #0b1220;
+  --panel: #121a2b;
+  --ink: #e8eefc;
+  --muted: #9aa8c7;
+  --line: #243049;
+  --accent: #5b8cff;
+  --accent-2: #3ee0c5;
+  --danger: #ff6b7a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: radial-gradient(1200px 600px at 10% -10%, #1b2a4a 0%, var(--bg) 55%);
+  color: var(--ink);
+  min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.nav, .footer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(11, 18, 32, 0.85);
+}
+.footer { border-top: 1px solid var(--line); border-bottom: 0; color: var(--muted); margin-top: 2rem; }
+.brand { font-weight: 700; color: var(--ink); letter-spacing: .04em; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+.hero h1 { font-size: 2.4rem; margin-bottom: .4rem; }
+.muted { color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+.card, .table-wrap, form.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+.card h3 { margin-top: 0; }
+.btn, button, input[type=submit] {
+  display: inline-block;
+  background: var(--accent);
+  color: #081018;
+  border: 0;
+  border-radius: 8px;
+  padding: .5rem .8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn.danger, .danger { background: var(--danger); color: #1a0609; }
+.row-actions { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: .65rem .4rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+label { display: block; margin: .7rem 0 .3rem; color: var(--muted); }
+input, textarea, select {
+  width: 100%;
+  padding: .55rem .7rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0d1524;
+  color: var(--ink);
+}
+.flash { background: #12352f; border: 1px solid var(--accent-2); padding: .8rem 1rem; border-radius: 10px; }
+.crumb { color: var(--muted); margin-bottom: 1rem; }
+.inline { display: inline; }
+code, pre { background: #0d1524; padding: .15rem .35rem; border-radius: 6px; }
+pre { padding: 1rem; overflow: auto; }
+.pill { display: inline-block; padding: .15rem .5rem; border-radius: 999px; background: #1b2c4d; font-size: .8rem; }

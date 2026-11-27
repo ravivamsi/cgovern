@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Notifications</h1>
+  <div class="card" th:each="n : ${notifications}">
+    <h3 th:text="${n.title}">title</h3>
+    <p th:text="${n.body}"></p>
+    <p class="muted" th:text="${n.createdAt}"></p>
+  </div>
+  <h2>Job runs</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Status</th><th>Log</th></tr></thead>
+      <tbody>
+        <tr th:each="run : ${runs}">
+          <td th:text="${run.id}"></td>
+          <td th:text="${run.status}"></td>
+          <td><pre th:text="${run.logOutput}"></pre></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>
