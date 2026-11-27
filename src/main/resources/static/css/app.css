@@ -70,3 +70,6 @@ input, textarea, select {
 code, pre { background: #0d1524; padding: .15rem .35rem; border-radius: 6px; }
 pre { padding: 1rem; overflow: auto; }
 .pill { display: inline-block; padding: .15rem .5rem; border-radius: 999px; background: #1b2c4d; font-size: .8rem; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .8rem; }
+form.compact { margin-bottom: 1.2rem; }
+form.inline select { width: auto; display: inline-block; margin-right: .35rem; }

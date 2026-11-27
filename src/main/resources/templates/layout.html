@@ -19,6 +19,7 @@
   <a th:href="@{/features/cm/orgs}" sec:authorize="isAuthenticated()">CM</a>
   <a th:href="@{/features/agentic/orgs}" sec:authorize="isAuthenticated()">Agentic</a>
   <a th:href="@{/servers}" sec:authorize="isAuthenticated()">Servers</a>
+  <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a>
   <a th:href="@{/templates}" sec:authorize="isAuthenticated()">Templates</a>
   <a th:href="@{/plugins}" sec:authorize="isAuthenticated()">Plugins</a>
   <a th:href="@{/notifications}" sec:authorize="isAuthenticated()">Notifications</a>

@@ -69,4 +69,34 @@ class CgovernWebTest {
                 .param("password", "secret1"))
                 .andExpect(redirectedUrlPattern("/login*"));
     }
+
+    @Test
+    @WithMockUser(username = "admin@cgovern.dev")
+    void adminConsoleRequiresPlatformAdmin() throws Exception {
+        mvc.perform(get("/admin")).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "admin@cgovern.dev", roles = "ADMIN")
+    void adminCanManageOrgAccessAndServers() throws Exception {
+        mvc.perform(get("/admin")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Admin console")));
+        mvc.perform(get("/admin/orgs/1")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("member@cgovern.dev")));
+        mvc.perform(post("/admin/orgs/1/members").with(csrf())
+                .param("email", "member@cgovern.dev")
+                .param("role", "VIEWER"))
+                .andExpect(status().is3xxRedirection());
+        mvc.perform(get("/servers")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Add server")));
+        mvc.perform(post("/servers").with(csrf())
+                .param("name", "edge-1")
+                .param("region", "us-east-1")
+                .param("baseUrl", "https://edge.example:8443")
+                .param("simulated", "true"))
+                .andExpect(status().is3xxRedirection());
+        mvc.perform(get("/servers")).andExpect(content().string(containsString("edge-1")));
+        mvc.perform(post("/servers/1/delete").with(csrf())).andExpect(status().is3xxRedirection());
+        mvc.perform(get("/servers")).andExpect(content().string(containsString("cd-worker-west")));
+    }
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+<body>
+<section th:fragment="content">
+  <h1>Admin console</h1>
+  <p class="muted">Platform admins manage who can sign in as an operator and who can work inside each organization.</p>
+  <p th:if="${message}" class="flash" th:text="${message}"></p>
+
+  <h2>Users</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Platform role</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="u : ${users}">
+          <td th:text="${u.fullName}"></td>
+          <td th:text="${u.email}"></td>
+          <td><span class="pill" th:text="${u.role}"></span></td>
+          <td>
+            <form th:action="@{|/admin/users/${u.id}/role|}" method="post" class="inline">
+              <select name="role">
+                <option value="ROLE_USER" th:selected="${u.role == 'ROLE_USER'}">User</option>
+                <option value="ROLE_ADMIN" th:selected="${u.role == 'ROLE_ADMIN'}">Admin</option>
+              </select>
+              <button type="submit">Save</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Organizations</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Org</th><th>Module</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="org : ${organizations}">
+          <td th:text="${org.name}"></td>
+          <td th:text="${org.module.title}"></td>
+          <td><a class="btn" th:href="@{|/admin/orgs/${org.id}|}">Manage access</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

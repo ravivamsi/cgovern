@@ -21,7 +21,11 @@ mvn spring-boot:run
 
 Open http://localhost:8080
 
-Demo login: `admin@cgovern.dev` / `admin123`
+Demo login: `admin@cgovern.dev` / `admin123` (platform admin)
+
+Org member: `member@cgovern.dev` / `member123`
+
+Servers are added and removed on `/servers` (one form, one Remove button). Org access is managed on `/admin`.
 
 ## Architecture
 

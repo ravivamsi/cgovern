@@ -14,6 +14,7 @@
           <td><a th:href="@{|/features/${feature.slug}/orgs/${org.id}/services|}" th:text="${org.name}">name</a></td>
           <td th:text="${org.description}"></td>
           <td class="row-actions">
+            <a class="btn secondary" th:href="@{|/admin/orgs/${org.id}|}" sec:authorize="hasRole('ADMIN')">Access</a>
             <a class="btn secondary" th:href="@{|/features/${feature.slug}/orgs/${org.id}/edit|}">Update</a>
             <form th:action="@{|/features/${feature.slug}/orgs/${org.id}/delete|}" method="post" class="inline">
               <button class="danger" type="submit">Delete</button>

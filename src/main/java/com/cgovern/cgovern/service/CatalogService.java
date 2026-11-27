@@ -128,6 +128,10 @@ public class CatalogService {
 
     @Transactional
     public void deleteServer(Long id) {
+        jobs.findByRemoteServerId(id).forEach(job -> {
+            job.setRemoteServer(null);
+            jobs.save(job);
+        });
         servers.deleteById(id);
     }
 }

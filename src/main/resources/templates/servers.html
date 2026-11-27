@@ -2,9 +2,48 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
 <body>
 <section th:fragment="content">
-  <h1>Remote servers / agents</h1>
-  <p class="muted">Workers that receive HMAC-signed tasks. Keep one agent close to each runtime environment rather than opening inbound SSH to the control plane.</p>
-  <p><a class="btn" th:href="@{/servers/new}">Add server</a></p>
+  <h1>Remote servers</h1>
+  <p class="muted">Add a worker in one form. Remove unassigns any jobs that pointed at it. Leave the secret blank to auto-generate one.</p>
+  <p th:if="${message}" class="flash" th:text="${message}"></p>
+
+  <form class="panel compact" th:action="@{/servers}" th:object="${server}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <h3 th:text="*{id} == null ? 'Add server' : 'Update server'">Add server</h3>
+    <div class="form-grid">
+      <div>
+        <label>Name</label>
+        <input th:field="*{name}" required placeholder="ci-worker-east"/>
+      </div>
+      <div>
+        <label>Region</label>
+        <input th:field="*{region}" required placeholder="us-east-1"/>
+      </div>
+      <div>
+        <label>Agent URL</label>
+        <input th:field="*{baseUrl}" required placeholder="https://agent.example:8443"/>
+      </div>
+      <div>
+        <label>Shared secret</label>
+        <input th:field="*{sharedSecret}" placeholder="auto-generated if empty"/>
+      </div>
+      <div>
+        <label>Capabilities</label>
+        <input th:field="*{allowedCapabilities}" placeholder="BUILD,TEST,DEPLOY,MONITOR"/>
+      </div>
+      <div>
+        <label>Mode</label>
+        <select th:field="*{simulated}">
+          <option th:value="true">simulated</option>
+          <option th:value="false">live</option>
+        </select>
+      </div>
+    </div>
+    <p class="row-actions">
+      <button type="submit" th:text="*{id} == null ? 'Add server' : 'Save changes'">Add server</button>
+      <a class="btn secondary" th:if="*{id} != null" th:href="@{/servers}">Cancel</a>
+    </p>
+  </form>
+
   <div class="table-wrap">
     <table>
       <thead><tr><th>Name</th><th>Region</th><th>URL</th><th>Capabilities</th><th>Mode</th><th></th></tr></thead>
@@ -16,9 +55,10 @@
           <td th:text="${s.allowedCapabilities}"></td>
           <td th:text="${s.simulated} ? 'simulated' : 'live'"></td>
           <td class="row-actions">
-            <a class="btn secondary" th:href="@{|/servers/${s.id}/edit|}">Update</a>
-            <form th:action="@{|/servers/${s.id}/delete|}" method="post" class="inline">
-              <button class="danger" type="submit">Delete</button>
+            <a class="btn secondary" th:href="@{|/servers/${s.id}/edit|}">Edit</a>
+            <form th:action="@{|/servers/${s.id}/delete|}" method="post" class="inline"
+                  onsubmit="return confirm('Remove this server from the control plane?');">
+              <button class="danger" type="submit">Remove</button>
             </form>
           </td>
         </tr>
